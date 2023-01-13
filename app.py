@@ -6,6 +6,9 @@ from db import Meme
 UPLOAD_FOLDER = '/app/memes'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
 app = Flask(__name__, static_folder='public', static_url_path="")
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
