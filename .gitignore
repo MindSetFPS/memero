@@ -1,0 +1,10 @@
+geckodriver
+geckodriver.log
+/templates
+__pycache__/
+public/
+r.py
+frontend/.vscode
+frontend/node_modules
+/memes
+generator3.py
