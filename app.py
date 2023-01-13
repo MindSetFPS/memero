@@ -1,6 +1,7 @@
 from flask import Flask, render_template, url_for, send_from_directory, request, flash, redirect, send_file
 import os
 from werkzeug.utils import secure_filename
+from db import Meme
 
 UPLOAD_FOLDER = '/app/memes'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
@@ -37,6 +38,8 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            new_meme = Meme.create(filename=filename, tags="{'tags': []}")
+            new_meme.save()
             return redirect(request.url)
     return redirect(url_for('download_file', name=filename))
 
