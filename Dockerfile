@@ -5,13 +5,4 @@ RUN apk add npm
 
 WORKDIR /app
 
-COPY . .
-
-WORKDIR /app/frontend/vite-project
-
-RUN npm i
-RUN npm run build
-
-WORKDIR /app
-
-ENTRYPOINT ["flask", "--app", "app", "run"]
+ENTRYPOINT ["/bin/sh"]
