@@ -8,3 +8,4 @@ frontend/.vscode
 frontend/node_modules
 /memes
 generator3.py
+data.db
