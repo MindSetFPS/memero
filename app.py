@@ -33,7 +33,7 @@ def allowed_file(filename):
 def upload_file():
     if request.method == 'POST':
         # check if the post request has the file part
-        print(request.form)
+        print(request.form['tags'])
         if 'file' not in request.files:
             print('No file part')
             return redirect(request.url)
@@ -46,8 +46,8 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            new_meme = Meme.create(filename=filename, tags="{'tags': []}")
-            # new_meme = Meme.create(filename=filename, tags="[]")
+            # new_meme = Meme.create(filename=filename, tags="{'tags")
+            new_meme = Meme.create(filename=filename, tags=request.form['tags'])
             new_meme.save()
             return redirect(request.url)
     return redirect(url_for('download_file', name=filename))
