@@ -1,7 +1,10 @@
 from flask import Flask, render_template, url_for, send_from_directory, request, flash, redirect, send_file
+from flask_cors import CORS
 import os
 from werkzeug.utils import secure_filename
 from db import Meme
+from playhouse.shortcuts import model_to_dict
+import json
 
 UPLOAD_FOLDER = '/app/memes'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
@@ -10,6 +13,7 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 app = Flask(__name__, static_folder='public', static_url_path="")
+CORS(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/vite.svg')
@@ -29,6 +33,7 @@ def allowed_file(filename):
 def upload_file():
     if request.method == 'POST':
         # check if the post request has the file part
+        print(request.form)
         if 'file' not in request.files:
             print('No file part')
             return redirect(request.url)
@@ -42,13 +47,17 @@ def upload_file():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             new_meme = Meme.create(filename=filename, tags="{'tags': []}")
+            # new_meme = Meme.create(filename=filename, tags="[]")
             new_meme.save()
             return redirect(request.url)
     return redirect(url_for('download_file', name=filename))
 
 @app.route('/images')
 def get_images():
-    return {'memes': os.listdir(UPLOAD_FOLDER)}
+    memes = Meme.select()
+    memes = [model_to_dict(u) for u in memes]
+    memes = json.dumps(memes)
+    return memes
 
 @app.route('/image/<file>')
 def get_image(file):
