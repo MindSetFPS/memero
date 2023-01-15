@@ -5,7 +5,7 @@
 
 <div class="flex" >
     {#each taglist as tag}
-    <p class="hover:bg-orange-500 p-2">
+    <p class="hover:bg-orange-500 px-4 mx-2 rounded-full bg-slate-400">
         {tag}
     </p>
     {/each}
