@@ -1,10 +1,46 @@
 {#if filteredSearch.length == 0 || matchingElements.length > 0}
-<div class="max-w-md">
-    <img src="{baseUrl}/image/{post.filename}" alt="">
+<div class="max-w-md" >
+    <img src="{baseUrl}/image/{post.filename}" alt="" on:click={bigPicture}>
     <div>
         {post.filename}
         <Tag tags={post.tags} />
     </div>
+    {#if isBigPicture }
+        <div class="fixed h-screen w-screen top-0 left-0" >
+            <div 
+                class="
+                    absolute z-20 top-0 
+                    bg-white
+                    h-1/2 w-1/2
+                    left-1/2 -translate-x-1/2 translate-y-1/2
+                    p-2 rounded-lg
+                    text-center
+                    lg:flex
+                    lg:justify-start
+            ">
+                <!-- <div>                   left-0  </div> -->
+                    <div 
+                        class="h-full w-full bg-contain bg-center bg-no-repeat " 
+                        style="background-image: url({baseUrl}/image/{post.filename})" 
+                        alt=""
+                    >
+                    </div>
+                    <div class=" font-bold  text-3xl w-2/3">
+                        <div>
+                            {#if post.tags.length == 0}
+                            <div>Agregar tags</div>
+                            {:else}
+                            <Tag tags={post.tags} />
+                            {/if}
+                        </div>
+                        <button class="rounded-lg bg-red-500 text-white  p-2 hover:bg-red-700" on:click={deleteMeme}>
+                            Borrar
+                        </button>
+                    </div>
+                </div>
+            <div class="absolute z-10 top-0 left-0 bg-black/70 w-screen h-screen " on:click={bigPicture}></div>
+        </div>
+    {/if}
 </div>
 {/if}
 
@@ -14,11 +50,22 @@
     export let post;
     export let filteredSearch;
     let matchingElements
+    let isBigPicture = false;
 
     let baseUrl = getBaseUrl()
     $: {
         // console.log(filteredSearch)
         matchingElements = filteredSearch.filter(element => post.tags.includes(element))
-        console.log(matchingElements)
+        // console.log(matchingElements)
     }
+
+    function bigPicture(){
+        console.log("clicked image")
+        isBigPicture = !isBigPicture
+    }
+
+    function deleteMeme(){
+        console.log("delete mf")
+    }
+
 </script>
