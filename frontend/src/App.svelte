@@ -1,8 +1,9 @@
 <script>
-  import Tag from "./lib/Tag.svelte";
+  import Meme from "./lib/Meme.svelte";
+import Tag from "./lib/Tag.svelte";
 import Tags from "./lib/Tags.svelte";
+  import getBaseUrl from "./lib/getBaseUrl"
 
-  
 	async function getImages() {
     const res = await fetch(`http://127.0.0.1:5000/images`);
 		const text = await res.json();
@@ -14,14 +15,6 @@ import Tags from "./lib/Tags.svelte";
       throw new Error(text);
 		}
 	}
-  
-  function getBaseUrl(){
-    if (import.meta.env.PROD){
-      return ''
-    } else {
-      return 'http://127.0.0.1:5000'
-    }
-  }
   
   async function handleUpload(){
     console.log(files)
@@ -44,16 +37,40 @@ import Tags from "./lib/Tags.svelte";
       throw new Error(text);
 		}
   }
-  
+
+  function handleSearh(){
+    filteredSearch = search.split(",")
+  }
+
   let posts;
   let files;
   let tags;
+  let search;
+  let filteredSearch = []
   let promise = getImages()
   let baseUrl = getBaseUrl()
 </script>
 
 <main>
-  <h1 class="text-5xl font-bold">Hola</h1>
+  <h1 class="text-5xl font-bold">Your memes sir</h1>
+  <div>
+    <input 
+      type="text" 
+      name="filter" 
+      id="filter" 
+      placeholder="buscar meme" 
+      bind:value={search} 
+      on:input={handleSearh}
+    >
+    <p class="flex">
+      {#each filteredSearch as t}
+        <div class="p-2 bg-blue-300 rounded-md m-2">
+          {t}
+        </div>
+      {/each}
+    </p>
+  </div>
+
   <form action="/" method="post" enctype="multipart/form-data" on:submit|preventDefault={handleUpload} >
     <input type="file" id="myFile" name="file" bind:files >
     <input type="submit" value="Upload">
@@ -63,13 +80,11 @@ import Tags from "./lib/Tags.svelte";
     {#await promise}
       <h1>Loading</h1>
     {:then promise}
-    {#each promise as post}
-      <img src="{baseUrl}/image/{post.filename}" alt="">
-      <div class="flex">
-        {post.filename}
-        <Tag tags={post.tags} />
+      <div class="grid grid-cols-3 gap-3">
+        {#each promise as post}
+          <Meme filteredSearch={filteredSearch} post={post}/>
+        {/each}
       </div>
-      {/each}
     {/await}
   </div>
 </main>
