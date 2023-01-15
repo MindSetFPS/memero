@@ -1,7 +1,6 @@
 <script>
   import Meme from "./lib/Meme.svelte";
-import Tag from "./lib/Tag.svelte";
-import Tags from "./lib/Tags.svelte";
+  import Tags from "./lib/Tags.svelte";
   import getBaseUrl from "./lib/getBaseUrl"
 
 	async function getImages() {
@@ -10,13 +9,13 @@ import Tags from "./lib/Tags.svelte";
     
 		if (res.ok) {
       console.log(text)
-			return text;
+			promise = text;
 		} else {
       throw new Error(text);
 		}
 	}
   
-  async function handleUpload(){
+  async function handleUpload(event){
     console.log(files)
     const formData = new FormData()
     formData.append('file', files[0])
@@ -28,13 +27,12 @@ import Tags from "./lib/Tags.svelte";
       method: 'POST',
       body: formData
     })
-    
-    const text = await res.json()
-    
+    // const text = await res.json()
+    console.log(res)
+
     if (res.ok) {
-      return text;
-		} else {
-      throw new Error(text);
+      getImages()
+      event.target.reset()
 		}
   }
 
@@ -47,8 +45,9 @@ import Tags from "./lib/Tags.svelte";
   let tags;
   let search;
   let filteredSearch = []
-  let promise = getImages()
+  let promise = []
   let baseUrl = getBaseUrl()
+  getImages()
 </script>
 
 <main>
