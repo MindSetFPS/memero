@@ -8,7 +8,7 @@
 		const text = await res.json();
     
 		if (res.ok) {
-      console.log(text)
+      // console.log(text)
 			promise = text;
 		} else {
       throw new Error(text);
@@ -16,19 +16,19 @@
 	}
   
   async function handleUpload(event){
-    console.log(files)
+    // console.log(files)
     const formData = new FormData()
-    formData.append('file', files[0])
+    for (let i = 0; i < files.length; i++){
+      console.log(files[i].name)
+      formData.append('file', files[i])
+    }
     formData.append('tags', tags)
-    
-    console.log(tags)
     
     const res = await fetch(baseUrl + '/', {
       method: 'POST',
       body: formData
     })
     // const text = await res.json()
-    console.log(res)
 
     if (res.ok) {
       getImages()
@@ -71,7 +71,7 @@
   </div>
 
   <form action="/" method="post" enctype="multipart/form-data" on:submit|preventDefault={handleUpload} >
-    <input type="file" id="myFile" name="file" bind:files >
+    <input type="file" id="myFile" name="file" bind:files multiple >
     <input type="submit" value="Upload">
     <Tags bind:value={tags} on:tag={() => console.log(tags)} />
   </form>
