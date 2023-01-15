@@ -42,17 +42,20 @@ def upload_file():
         for file in files:
             # If the user does not select a file, the browser submits an
             # empty file without a filename.
-            print(file)
             if file.filename == '':
                 flash('No selected file')
                 return redirect(request.url)
             if file and allowed_file(file.filename):
                 print(file)
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                # new_meme = Meme.create(filename=filename, tags="{'tags")
-                new_meme = Meme.create(filename=filename, tags=request.form['tags'])
-                new_meme.save()
+                meme_query = Meme.select().where(Meme.filename == file.filename)
+                if meme_query.exists():
+                    print('it does exist')
+                else:
+                    filename = secure_filename(file.filename)
+                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    # new_meme = Meme.create(filename=filename, tags="{'tags")
+                    new_meme = Meme.create(filename=filename, tags=request.form['tags'])
+                    new_meme.save()
         return redirect(request.url)
             # return redirect(url_for('download_file', name=filename))
 
