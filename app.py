@@ -31,26 +31,30 @@ def allowed_file(filename):
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
+    print(request.method)
     if request.method == 'POST':
         # check if the post request has the file part
-        print(request.form['tags'])
+        files = request.files.getlist("file")
+
         if 'file' not in request.files:
             print('No file part')
             return redirect(request.url)
-        file = request.files['file']
-        # If the user does not select a file, the browser submits an
-        # empty file without a filename.
-        if file.filename == '':
-            # flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            # new_meme = Meme.create(filename=filename, tags="{'tags")
-            new_meme = Meme.create(filename=filename, tags=request.form['tags'])
-            new_meme.save()
-            return redirect(request.url)
-    return redirect(url_for('download_file', name=filename))
+        for file in files:
+            # If the user does not select a file, the browser submits an
+            # empty file without a filename.
+            print(file)
+            if file.filename == '':
+                flash('No selected file')
+                return redirect(request.url)
+            if file and allowed_file(file.filename):
+                print(file)
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                # new_meme = Meme.create(filename=filename, tags="{'tags")
+                new_meme = Meme.create(filename=filename, tags=request.form['tags'])
+                new_meme.save()
+        return redirect(request.url)
+            # return redirect(url_for('download_file', name=filename))
 
 @app.route('/images')
 def get_images():
