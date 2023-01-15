@@ -20,3 +20,10 @@ Album:
 
 Recollector:
     - Selenium
+
+## Todo
+
+- [] Delete memes
+- [] Delete tags
+- [] Filter memes
+- [] Support for video memes
