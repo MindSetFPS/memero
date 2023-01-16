@@ -21,11 +21,10 @@
                 <!-- <div>                   left-0  </div> -->
                     <div 
                         class="h-full w-full bg-contain bg-center bg-no-repeat " 
-                        style="background-image: url({baseUrl}/image/{post.filename})" 
-                        alt=""
+                        style="background-image: url({baseUrl}/image/{post.filename})"
                     >
                     </div>
-                    <div class=" font-bold  text-3xl w-2/3">
+                    <div class="flex flex-col justify-center font-bold  text-3xl w-full p-2">
                         <div>
                             {#if post.tags.length == 0}
                             <div>Agregar tags</div>
