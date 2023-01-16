@@ -37,13 +37,14 @@
                         </button>
                     </div>
                 </div>
-            <div class="absolute z-10 top-0 left-0 bg-black/70 w-screen h-screen " on:click={bigPicture}></div>
-        </div>
+                <GrayBackground on:clicked={bigPicture} />
+            </div>
     {/if}
 </div>
 {/if}
 
 <script>
+    import GrayBackground from "./GrayBackground.svelte";
     import Tag from "./Tag.svelte";
     import getBaseUrl from "./getBaseUrl";
     export let post;
