@@ -82,6 +82,15 @@ def delete_image(id):
     response = {'message': 'image deletion: success'}
     return response
 
+@app.route('/image/edit/<id>', methods=['POST'])
+def edit_meme(id):
+    print(id)
+    var = Meme.set_by_id(id, {"tags": 'editado'})
+    meme = Meme.get_by_id(id)
+    print(var)
+    return { 'tags': meme.tags }
+
+
 @app.errorhandler(404)
 def not_found(e):
     return { 'error': 'Not found', 'code': 404 }
