@@ -4,13 +4,13 @@
 
 memero can be seen as a album with high focus in tags, organization and classificatinon, but also recollection of memes.
 
-The recollector uses available api's, as well as selenium.
+The recollector will use available api's, as well as selenium.
 
-The album displays your memes in alphabetical order, or by popularity, with the ability of filter by tags.
+The album will display your memes in alphabetical order, or by popularity, with the ability of filter by tags.
 
-The app shows the top memes found in the last 24 hours.
+The app will show the top memes found in the last 24 hours.
 
-The app runs in a container with bot services.
+The app will run in a container with bot services.
 
 Album:
     - Frontend: Built with Svelte
@@ -23,7 +23,9 @@ Recollector:
 
 ## Todo
 
-- [] Delete memes
-- [] Delete tags
-- [] Filter memes
-- [] Support for video memes
+- [x] Delete memes
+- [ ] Delete tags
+- [ ] Filter memes
+- [ ] Support for video memes
+- [ ] Recollect best memes of the day
+- [ ] Sort by popularity
