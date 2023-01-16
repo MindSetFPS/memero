@@ -3,7 +3,7 @@
     <img src="{baseUrl}/image/{post.filename}" alt="" on:click={bigPicture}>
     <div>
         {post.filename}
-        <Tag tags={post.tags} />
+        <TagList tags={post.tags} />
     </div>
     {#if isBigPicture }
         <div class="fixed h-screen w-screen top-0 left-0" >
@@ -17,31 +17,33 @@
                     text-center
                     lg:flex
                     lg:justify-start
+                    scale-125
             ">
                 <!-- <div>                   left-0  </div> -->
-                    <div 
-                        class="h-full w-full bg-contain bg-center bg-no-repeat " 
-                        style="background-image: url({baseUrl}/image/{post.filename})"
-                    >
-                    </div>
-                    <div class="flex flex-col justify-center font-bold  text-3xl w-full p-2">
-                        <div>
-                            {#if post.tags.length == 0}
+                <div 
+                    class="h-full w-1/3 bg-contain bg-center bg-no-repeat " 
+                    style="background-image: url({baseUrl}/image/{post.filename})"
+                >
+                </div>
+                <div class="flex flex-col justify-center font-bold text-xl w-full p-2">
+                    <div class="overflow-auto" >
+                        {#if post.tags.length == 0}
                             <div>Agregar tags</div>
-                            {:else}
-                            <Tag tags={post.tags} />
-                            {/if}
-                        </div>
-                        {#if showconfirmDelete}
-                            De verdad quieres borrar este meme? Esto no se puede deshacer
-                            <DeleteButton id={post.id} on:delete={deleteMeme} />
+                            <TagEditor id={post.id} />
                         {:else}
-                            <Button on:clicked={ () => showconfirmDelete = !showconfirmDelete} type="red" text="Borrar meme"   />
+                            <TagList tags={post.tags} on:deleteTag={handleTagDeleted} />
                         {/if}
                     </div>
+                    {#if showconfirmDelete}
+                        De verdad quieres borrar este meme? Esto no se puede deshacer
+                        <DeleteButton id={post.id} on:delete={deleteMeme} />
+                    {:else}
+                        <Button on:clicked={ () => showconfirmDelete = !showconfirmDelete} type="green" text="Borrar meme"   />
+                    {/if}
                 </div>
-                <GrayBackground on:clicked={bigPicture} />
             </div>
+            <GrayBackground on:clicked={bigPicture} />
+        </div>
     {/if}
 </div>
 {/if}
@@ -51,8 +53,9 @@
     import GrayBackground from "./GrayBackground.svelte";
     import Button from "./Button.svelte";
     import DeleteButton from "./DeleteButton.svelte";
-    import Tag from "./Tag.svelte";
+    import TagList from "./TagList.svelte";
     import getBaseUrl from "./getBaseUrl";
+    import TagEditor from "./TagEditor.svelte";
 
     export let post;
     export let filteredSearch;
@@ -60,7 +63,6 @@
     let isBigPicture = false;
     let showconfirmDelete = false;
     const dispatch = createEventDispatcher()
-
 
     let baseUrl = getBaseUrl()
     $: {
@@ -87,6 +89,16 @@
 		} else {
       throw new Error(text);
 		}
+    }
+
+
+    function handleTagDeleted(event){
+        dispatch('deleteTag', {
+            tag: event.detail.tag,
+            index: event.detail.index
+        })  
+        // taglist.splice(index, 1)
+        // taglist = taglist
     }
 
 </script>
