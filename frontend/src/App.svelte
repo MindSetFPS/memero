@@ -1,6 +1,6 @@
 <script>
   import Meme from "./lib/Meme.svelte";
-  import Tags from "./lib/Tags.svelte";
+  import TagSetup from "./lib/TagSetup.svelte";
   import getBaseUrl from "./lib/getBaseUrl"
 
 	async function getImages() {
@@ -45,10 +45,6 @@
     const index = promise.findIndex( ({id}) => id == event.detail.deletedId)
     promise.splice(index, 1)
     promise = promise
-
-    // promise = [...]
-
-    // console.log('id de meme borrado: ' + result)
   }
 
   let posts;
@@ -84,7 +80,7 @@
   <form action="/" method="post" enctype="multipart/form-data" on:submit|preventDefault={handleUpload} >
     <input type="file" id="myFile" name="file" bind:files multiple >
     <input type="submit" value="Upload">
-    <Tags bind:value={tags} on:tag={() => console.log(tags)} />
+    <TagSetup bind:value={tags} on:tag={() => console.log(tags)} />
   </form>
   <div>
     {#await promise}
