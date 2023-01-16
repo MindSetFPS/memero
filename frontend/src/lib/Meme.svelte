@@ -75,7 +75,7 @@
     }
 
     async function deleteMeme(event){
-        const res = await fetch(`${baseUrl}/images/delete/${event.detail.id}`);
+        const res = await fetch(`${baseUrl}/image/delete/${event.detail.id}`);
 		const text = await res.json();
     
 		if (res.ok) {
@@ -84,7 +84,6 @@
             dispatch('meme_deleted', {
                 deletedId: event.detail.id
             })
-            console.log('Deleted')
 		} else {
       throw new Error(text);
 		}
