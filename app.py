@@ -70,6 +70,18 @@ def get_images():
 def get_image(file):
     return send_file(UPLOAD_FOLDER + '/' + file)
 
+@app.route('/image/delete/<id>', methods=['GET'])
+def delete_image(id):
+    # print(id)
+    
+    meme = Meme.get_by_id(pk=id)
+    print(meme.filename)
+    if os.path.isfile(UPLOAD_FOLDER + '/' + meme.filename):
+        os.remove(path=UPLOAD_FOLDER + '/' + meme.filename)
+    Meme.delete_by_id(pk=id)
+    response = {'message': 'image deletion: success'}
+    return response
+
 @app.errorhandler(404)
 def not_found(e):
     return { 'error': 'Not found', 'code': 404 }
