@@ -32,9 +32,12 @@
                             <Tag tags={post.tags} />
                             {/if}
                         </div>
-                        <button class="rounded-lg bg-red-500 text-white  p-2 hover:bg-red-700" on:click={deleteMeme}>
-                            Borrar
-                        </button>
+                        {#if showconfirmDelete}
+                            De verdad quieres borrar este meme? Esto no se puede deshacer
+                            <DeleteButton id={post.id} on:delete={deleteMeme} />
+                        {:else}
+                            <Button on:clicked={ () => showconfirmDelete = !showconfirmDelete} type="red" text="Borrar meme"   />
+                        {/if}
                     </div>
                 </div>
                 <GrayBackground on:clicked={bigPicture} />
@@ -44,13 +47,20 @@
 {/if}
 
 <script>
+    import { createEventDispatcher } from "svelte"
     import GrayBackground from "./GrayBackground.svelte";
+    import Button from "./Button.svelte";
+    import DeleteButton from "./DeleteButton.svelte";
     import Tag from "./Tag.svelte";
     import getBaseUrl from "./getBaseUrl";
+
     export let post;
     export let filteredSearch;
     let matchingElements
     let isBigPicture = false;
+    let showconfirmDelete = false;
+    const dispatch = createEventDispatcher()
+
 
     let baseUrl = getBaseUrl()
     $: {
@@ -64,8 +74,20 @@
         isBigPicture = !isBigPicture
     }
 
-    function deleteMeme(){
-        console.log("delete mf")
+    async function deleteMeme(event){
+        const res = await fetch(`${baseUrl}/images/delete/${event.detail.id}`);
+		const text = await res.json();
+    
+		if (res.ok) {
+      // console.log(text)
+            isBigPicture = !isBigPicture
+            dispatch('meme_deleted', {
+                deletedId: event.detail.id
+            })
+            console.log('Deleted')
+		} else {
+      throw new Error(text);
+		}
     }
 
 </script>

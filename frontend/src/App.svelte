@@ -40,6 +40,17 @@
     filteredSearch = search.split(",")
   }
 
+  function handleMemeDeleted(event){
+    console.log(event.detail.deletedId)
+    const index = promise.findIndex( ({id}) => id == event.detail.deletedId)
+    promise.splice(index, 1)
+    promise = promise
+
+    // promise = [...]
+
+    // console.log('id de meme borrado: ' + result)
+  }
+
   let posts;
   let files;
   let tags;
@@ -89,7 +100,7 @@
           2xl:grid-cols-8
       ">
         {#each promise as post}
-          <Meme filteredSearch={filteredSearch} post={post}/>
+          <Meme filteredSearch={filteredSearch} post={post} on:meme_deleted={handleMemeDeleted}/>
         {/each}
       </div>
     {/await}
