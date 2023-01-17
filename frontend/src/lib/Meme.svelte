@@ -25,21 +25,21 @@
                     style="background-image: url({baseUrl}/image/{post.filename})"
                 >
                 </div>
-                <div class="flex flex-col justify-center font-bold text-xl w-full p-2">
-                    index: {index}
+                <div class="flex flex-col justify-center font-bold w-full h-full p-2">
+                    <div class="flex w-full align-middle items-center">
+                        <div class="text-lg inline whitespace-nowrap">
+                            Agregar tags
+                        </div>
+                        <TagEditor id={post.id} index={index} />
+                    </div>
                     <div class="overflow-auto" >
-                        {#if post.tags.length == 0}
-                            <div>Agregar tags</div>
-                            <TagEditor id={post.id} />
-                        {:else}
-                            <TagList tags={$memesStore[index].tags} on:deleteTag={handleTagDeleted} />
-                        {/if}
+                        <TagList tags={$memesStore[index].tags} on:deleteTag={handleTagDeleted} />
                     </div>
                     {#if showconfirmDelete}
                         De verdad quieres borrar este meme? Esto no se puede deshacer
                         <DeleteButton id={post.id} on:delete={deleteMeme} />
                     {:else}
-                        <Button on:clicked={ () => showconfirmDelete = !showconfirmDelete} type="green" text="Borrar meme"   />
+                        <Button on:clicked={ () => showconfirmDelete = !showconfirmDelete} type="red" text="Borrar meme"   />
                     {/if}
                 </div>
             </div>

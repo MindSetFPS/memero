@@ -1,6 +1,5 @@
-<div>
     <input 
-        class="w-auto font-normal text-base hover:bg-slate-100 rounded-md transition"
+        class="w-full"
         type="text" 
         name="tag" 
         id="tag" 
@@ -8,7 +7,6 @@
         on:keypress={addTag} 
         bind:value={value}
     >
-</div>
 
 <script>
     import { memesStore } from "./store";
