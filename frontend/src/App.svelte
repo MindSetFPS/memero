@@ -2,14 +2,14 @@
   import Meme from "./lib/Meme.svelte";
   import TagSetup from "./lib/TagSetup.svelte";
   import getBaseUrl from "./lib/getBaseUrl"
+  import { memesStore } from "./lib/store";
 
 	async function getImages() {
     const res = await fetch(`http://127.0.0.1:5000/images`);
 		const text = await res.json();
     
 		if (res.ok) {
-      // console.log(text)
-			promise = text;
+      memesStore.set(text)      
 		} else {
       throw new Error(text);
 		}
@@ -45,6 +45,20 @@
     const index = promise.findIndex( ({id}) => id == event.detail.deletedId)
     promise.splice(index, 1)
     promise = promise
+  }
+
+  function handleTagDeleted(event){
+    // console.log(event.detail.memeId, event.detail.tag, event.detail.index, event.detail.taglist)
+
+    const memeIndex = event.detail.index
+    //copy the current list of memes
+    let memesCopy = [...$memesStore]
+
+    //edit the copy
+    memesCopy[memeIndex].tags = event.detail.taglist.toString()
+
+    //replace with the copy
+    memesStore.update((value) =>  value = memesCopy)
   }
 
   let posts;
@@ -95,8 +109,14 @@
           xl:grid-cols-6
           2xl:grid-cols-8
       ">
-        {#each promise as post}
-          <Meme filteredSearch={filteredSearch} post={post} on:meme_deleted={handleMemeDeleted}/>
+        {#each $memesStore as post, index}
+          <Meme 
+            filteredSearch={filteredSearch} 
+            post={post}
+            index={index}
+            on:meme_deleted={handleMemeDeleted}
+            on:deleteTag={handleTagDeleted}
+          />
         {/each}
       </div>
     {/await}

@@ -3,7 +3,7 @@
     <img src="{baseUrl}/image/{post.filename}" alt="" on:click={bigPicture}>
     <div>
         {post.filename}
-        <TagList tags={post.tags} />
+        <TagList tags={$memesStore[index].tags} on:deleteTag={handleTagDeleted} />
     </div>
     {#if isBigPicture }
         <div class="fixed h-screen w-screen top-0 left-0" >
@@ -26,12 +26,13 @@
                 >
                 </div>
                 <div class="flex flex-col justify-center font-bold text-xl w-full p-2">
+                    index: {index}
                     <div class="overflow-auto" >
                         {#if post.tags.length == 0}
                             <div>Agregar tags</div>
                             <TagEditor id={post.id} />
                         {:else}
-                            <TagList tags={post.tags} on:deleteTag={handleTagDeleted} />
+                            <TagList tags={$memesStore[index].tags} on:deleteTag={handleTagDeleted} />
                         {/if}
                     </div>
                     {#if showconfirmDelete}
@@ -56,8 +57,10 @@
     import TagList from "./TagList.svelte";
     import getBaseUrl from "./getBaseUrl";
     import TagEditor from "./TagEditor.svelte";
+    import { memesStore } from "./store";
 
     export let post;
+    export let index;
     export let filteredSearch;
     let matchingElements
     let isBigPicture = false;
@@ -66,13 +69,11 @@
 
     let baseUrl = getBaseUrl()
     $: {
-        // console.log(filteredSearch)
         matchingElements = filteredSearch.filter(element => post.tags.includes(element))
-        // console.log(matchingElements)
     }
 
     function bigPicture(){
-        console.log("clicked image")
+        console.log(post.tags)
         isBigPicture = !isBigPicture
     }
 
@@ -91,14 +92,13 @@
 		}
     }
 
-
     function handleTagDeleted(event){
         dispatch('deleteTag', {
             tag: event.detail.tag,
-            index: event.detail.index
+            index: index,
+            memeId: post.id,
+            taglist: event.detail.taglist
         })  
-        // taglist.splice(index, 1)
-        // taglist = taglist
     }
 
 </script>
