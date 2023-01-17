@@ -84,8 +84,8 @@ def delete_image(id):
 
 @app.route('/image/edit/<id>', methods=['POST'])
 def edit_meme(id):
-    print(id)
-    var = Meme.set_by_id(id, {"tags": 'editado'})
+    json_data = json.loads(request.data)
+    var = Meme.set_by_id(id, {"tags": json_data["tags"]})
     meme = Meme.get_by_id(id)
     print(var)
     return { 'tags': meme.tags }
