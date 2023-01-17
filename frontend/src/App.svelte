@@ -41,10 +41,16 @@
   }
 
   function handleMemeDeleted(event){
-    console.log(event.detail.deletedId)
-    const index = promise.findIndex( ({id}) => id == event.detail.deletedId)
-    promise.splice(index, 1)
-    promise = promise
+
+    //copy the current list of memes
+    const memeIndex = event.detail.index
+    let memesCopy = [...$memesStore]
+
+    //edit the copy
+    memesCopy.splice(memeIndex, 1)
+
+    //replace with the copy
+    memesStore.update((value) =>  value = memesCopy)
   }
 
   function handleTagDeleted(event){

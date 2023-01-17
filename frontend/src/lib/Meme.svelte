@@ -73,7 +73,6 @@
     }
 
     function bigPicture(){
-        console.log(post.tags)
         isBigPicture = !isBigPicture
     }
 
@@ -82,11 +81,10 @@
 		const text = await res.json();
     
 		if (res.ok) {
-      // console.log(text)
-            isBigPicture = !isBigPicture
             dispatch('meme_deleted', {
-                deletedId: event.detail.id
+                index: index
             })
+            isBigPicture = !isBigPicture
 		} else {
       throw new Error(text);
 		}
