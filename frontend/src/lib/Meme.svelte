@@ -6,7 +6,7 @@
         <TagList tags={$memesStore[index].tags} on:deleteTag={handleTagDeleted} />
     </div>
     {#if isBigPicture }
-        <div class="fixed h-screen w-screen top-0 left-0" >
+        <div class="fixed h-screen w-screen top-0 left-0 z-20" >
             <div 
                 class="
                     absolute z-20 top-0 
