@@ -26,7 +26,9 @@
 </script>
 
 <div class="relative h-full w-full text-sm overflow-auto " >
-    {#each taglist as tag}
-        <Tag tag={tag} on:delete={handleTagDeleted} />
-    {/each}
+    {#if tags && tags.length > 0}
+        {#each taglist as tag}
+            <Tag tag={tag} on:delete={handleTagDeleted} />
+        {/each}
+    {/if}
 </div>
