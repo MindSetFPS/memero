@@ -1,4 +1,4 @@
-<button class="rounded-lg text-white p-2 hover:{colors[type]}-800 {colors[type]}-500" on:click={handler}>
+<button class="rounded-lg text-black p-2  {colors[type]}" on:click={handler}>
     {text}
 </button>
 
@@ -9,9 +9,9 @@
     export let text;
 
     let colors = {
-        red:"bg-red",
-        green:"bg-green",
-        blue:"bg-blue"
+        red:"hover:bg-red-800 bg-red-500 text-white",
+        green:"hover:bg-green-800 bg-green-500 text-white",
+        blue:"hover:bg-blue-800 bg-blue-500 text-white"
     }
 
     const dispatch = createEventDispatcher()
