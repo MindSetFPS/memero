@@ -74,6 +74,7 @@
 
     function bigPicture(){
         isBigPicture = !isBigPicture
+        showconfirmDelete = false
     }
 
     async function deleteMeme(event){
