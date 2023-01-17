@@ -14,11 +14,11 @@
 </script>
 <div 
 class="
-    hover:bg-orange-500 font-normal rounded-full bg-slate-400 inline-block 
-    mx-1 px-2 my-1">
+    hover:bg-green-600 transition font-semibold rounded-full bg-blue-400 inline-block text-white
+    mx-1 px-3 py-1 my-1">
 {tag}
 
 <span
     on:click={handleClick} 
-    class="hover:bg-black rounded-full text-xs" >🚽</span>
+    class="hover:bg-black/40 rounded-full p-1 text-xs cursor-pointer" >🚽</span>
 </div>
