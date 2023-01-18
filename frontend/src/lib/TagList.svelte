@@ -31,4 +31,8 @@
             <Tag tag={tag} on:delete={handleTagDeleted} />
         {/each}
     {/if}
+
+    {#if tags.length == 0}
+        <h1 class="text-base">Sin tags</h1>
+    {/if}
 </div>
