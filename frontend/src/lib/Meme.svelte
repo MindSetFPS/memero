@@ -77,6 +77,32 @@
     function bigPicture(){
         isBigPicture = !isBigPicture
         showconfirmDelete = false
+
+
+        //copy the current list of memes
+        let memesCopy = [...$memesStore]
+
+        console.log(memesCopy)
+
+        //sort by tag length
+        memesCopy.sort( (meme1, meme2) => {
+            let tags1 = meme1.tags.length
+            let tags2 = meme2.tags.length
+            
+            if(tags1 < tags2){
+                return 1
+            }
+
+            if(tags1 > tags2){
+                return -1
+            }
+
+            return 0
+        })
+
+        //replace with the copy
+        memesStore.update((value) =>  value = memesCopy)
+
     }
 
     async function deleteMeme(event){
