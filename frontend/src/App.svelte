@@ -3,6 +3,7 @@
   import TagSetup from "./lib/TagSetup.svelte";
   import getBaseUrl from "./lib/getBaseUrl"
   import { memesStore } from "./lib/store";
+  import UploadMemes from "./lib/UploadMemes.svelte";
 
 	async function getImages() {
     const res = await fetch(`http://127.0.0.1:5000/images`);
@@ -14,27 +15,7 @@
       throw new Error(text);
 		}
 	}
-  
-  async function handleUpload(event){
-    // console.log(files)
-    const formData = new FormData()
-    for (let i = 0; i < files.length; i++){
-      console.log(files[i].name)
-      formData.append('file', files[i])
-    }
-    formData.append('tags', tags)
-    
-    const res = await fetch(baseUrl + '/', {
-      method: 'POST',
-      body: formData
-    })
-    // const text = await res.json()
 
-    if (res.ok) {
-      getImages()
-      event.target.reset()
-		}
-  }
 
   function handleSearh(){
     filteredSearch = search.split(",")
@@ -68,8 +49,6 @@
   }
 
   let posts;
-  let files;
-  let tags;
   let search;
   let filteredSearch = []
   let promise = []
@@ -78,34 +57,33 @@
 </script>
 
 <main class="p-4">
-  <h1 class="text-5xl font-bold">Your memes sir</h1>
-  <div>
-    <input 
-      type="text" 
-      name="filter" 
-      id="filter" 
-      placeholder="buscar meme" 
-      bind:value={search} 
-      on:input={handleSearh}
-    >
-    <p class="flex">
-      {#each filteredSearch as t}
-        <div class="p-2 bg-blue-300 rounded-md m-2">
-          {t}
-        </div>
-      {/each}
-    </p>
+  <div class="block lg:flex align-middle items-center w-full">
+    <h1 class="text-5xl font-bold">Your memes sir</h1>
+    <div>
+      <input 
+        type="text" 
+        name="filter" 
+        id="filter" 
+        placeholder="buscar meme" 
+        bind:value={search} 
+        on:input={handleSearh}
+      >
+      <p class="flex">
+        {#each filteredSearch as t}
+          <div class="p-2 bg-blue-300 rounded-md m-2">
+            {t}
+          </div>
+        {/each}
+      </p>
+    </div>
+
   </div>
 
-  <form action="/" method="post" enctype="multipart/form-data" on:submit|preventDefault={handleUpload} >
-    <input type="file" id="myFile" name="file" bind:files multiple >
-    <input type="submit" value="Upload">
-    <TagSetup bind:value={tags} on:tag={() => console.log(tags)} />
-  </form>
   <div>
     {#await promise}
       <h1>Loading</h1>
     {:then promise}
+      <UploadMemes on:filesUploaded={getImages} />
       <div 
         class="
           grid gap-3
@@ -124,6 +102,15 @@
             on:deleteTag={handleTagDeleted}
           />
         {/each}
+
+        {#if $memesStore.length == 0}
+          <h1 class="
+            w-screen h-screen flex justify-center align-middle items-center
+            font-bold text-6xl
+          ">
+            Sube tu primer meme 🤡
+          </h1>
+        {/if}
       </div>
     {/await}
   </div>
