@@ -2,7 +2,9 @@
 <div class="max-w-md" >
     <img src="{baseUrl}/image/{post.filename}" alt="" on:click={bigPicture}>
     <div>
-        {post.filename}
+        <p class="whitespace-nowrap overflow-hidden overflow-ellipsis">
+            {post.filename}
+        </p>
         <TagList tags={$memesStore[index].tags} on:deleteTag={handleTagDeleted} />
     </div>
     {#if isBigPicture }
@@ -26,7 +28,7 @@
                 >
                 </div>
                 <div class="flex flex-col justify-center font-bold w-full h-full p-2">
-                    <div class="flex w-full align-middle items-center">
+                    <div class="flex w-full align-middle items-center my-2">
                         <div class="text-lg inline whitespace-nowrap">
                             Agregar tags
                         </div>
