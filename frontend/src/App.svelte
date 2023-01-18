@@ -5,7 +5,7 @@
   import UploadMemes from "./lib/UploadMemes.svelte";
 
 	async function getImages() {
-    const res = await fetch(`http://127.0.0.1:5000/images`);
+    const res = await fetch(`${baseUrl}/images`);
 		const text = await res.json();
     
 		if (res.ok) {
@@ -14,7 +14,6 @@
       throw new Error(text);
 		}
 	}
-
 
   function handleSearh(){
     filteredSearch = search.split(",")
