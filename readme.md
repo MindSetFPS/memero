@@ -24,8 +24,23 @@ Recollector:
 ## Todo
 
 - [x] Delete memes
-- [ ] Delete tags
-- [ ] Filter memes
+- [x] Delete tags
+- [ ] Filter memes by name, size, likes, number of tags (by default)
 - [ ] Support for video memes
 - [ ] Recollect best memes of the day
 - [ ] Sort by popularity
+- [ ] Select mulple memes for deletion
+- [ ] Sort first memes with tags
+- [ ] Analyze 'memes' in the background to add files by jus dropping them in the folder
+- [ ] Group similar images
+- [ ] Add a field for number of likes/upvotes/ popularity
+- [ ] Built in image editor
+- [ ] Fix mobile version
+
+## Instructions for getting running
+
+###  Start development server
+
+```bash
+flask --app hello --debug run
+```
