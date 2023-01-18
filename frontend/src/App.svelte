@@ -1,6 +1,5 @@
 <script>
   import Meme from "./lib/Meme.svelte";
-  import TagSetup from "./lib/TagSetup.svelte";
   import getBaseUrl from "./lib/getBaseUrl"
   import { memesStore } from "./lib/store";
   import UploadMemes from "./lib/UploadMemes.svelte";
@@ -58,8 +57,7 @@
 
 <main class="p-4">
   <div class="block lg:flex align-middle items-center w-full">
-    <h1 class="text-5xl font-bold">Your memes sir</h1>
-    <div>
+    <h1 class="text-5xl font-bold whitespace-nowrap">Your memes sir</h1>
       <input 
         type="text" 
         name="filter" 
@@ -68,14 +66,13 @@
         bind:value={search} 
         on:input={handleSearh}
       >
-      <p class="flex">
+      <p class="flex overflow-auto">
         {#each filteredSearch as t}
-          <div class="p-2 bg-blue-300 rounded-md m-2">
-            {t}
-          </div>
+        <div class="p-2 bg-blue-300 rounded-md m-2">
+          {t}
+        </div>
         {/each}
       </p>
-    </div>
 
   </div>
 
