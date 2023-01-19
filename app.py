@@ -13,8 +13,9 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 app = Flask(__name__, static_folder='public', static_url_path="")
-CORS(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# CORS(app=app) only for development
 
 @app.route('/vite.svg')
 def fav():
@@ -59,10 +60,14 @@ def upload_file():
         return redirect(request.url)
             # return redirect(url_for('download_file', name=filename))
 
+def tag_length(meme):
+    return len(meme['tags'])
+
 @app.route('/images')
 def get_images():
     memes = Meme.select()
     memes = [model_to_dict(u) for u in memes]
+    memes.sort(key=tag_length, reverse=True)
     memes = json.dumps(memes)
     return memes
 
