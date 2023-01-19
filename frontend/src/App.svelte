@@ -19,19 +19,6 @@
     filteredSearch = search.split(",")
   }
 
-  function handleMemeDeleted(event){
-
-    //copy the current list of memes
-    const memeIndex = event.detail.index
-    let memesCopy = [...$memesStore]
-
-    //edit the copy
-    memesCopy.splice(memeIndex, 1)
-
-    //replace with the copy
-    memesStore.update((value) =>  value = memesCopy)
-  }
-
   function handleTagDeleted(event){
     // console.log(event.detail.memeId, event.detail.tag, event.detail.index, event.detail.taglist)
 
@@ -94,7 +81,6 @@
             filteredSearch={filteredSearch} 
             post={post}
             index={index}
-            on:meme_deleted={handleMemeDeleted}
             on:deleteTag={handleTagDeleted}
           />
         {/each}
