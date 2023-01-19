@@ -8,4 +8,11 @@
     function handler(){
         dispatch('clicked')
     }
+
+    document.onkeydown = function(event){
+            if(event.key == "Escape"){
+                dispatch('clicked')
+            }
+    }
+    
 </script>
