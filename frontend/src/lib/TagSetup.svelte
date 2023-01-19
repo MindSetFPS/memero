@@ -14,13 +14,10 @@
 
 </script>
 
-<div>
-    Tags
-    <input type="text" name="tag" id="tags" bind:value={currentTag} />
-    <button on:click|preventDefault={addTag} > Add </button>
-    {#each value as tag}
-        <div class="">
-            {tag}
-        </div>
-    {/each}
-</div>
+<input type="text" name="tag" id="tags" placeholder="agregar tags" bind:value={currentTag} />
+<button on:click|preventDefault={addTag} > Add </button>
+{#each value as tag}
+    <div class="">
+        {tag}
+    </div>
+{/each}
