@@ -2,18 +2,15 @@ from flask import Flask, render_template, url_for, send_from_directory, request,
 from flask_cors import CORS
 import os
 from werkzeug.utils import secure_filename
-from db import Meme
+from db import Meme,  MEME_FOLDER
 from playhouse.shortcuts import model_to_dict
 import json
 
-UPLOAD_FOLDER = '/app/memes'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
 
 app = Flask(__name__, static_folder='public', static_url_path="")
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MEME_FOLDER'] = MEME_FOLDER
 
 # CORS(app=app) only for development
 
@@ -53,7 +50,7 @@ def upload_file():
                     print('it does exist')
                 else:
                     filename = secure_filename(file.filename)
-                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    file.save(os.path.join(app.config['MEME_FOLDER'], filename))
                     # new_meme = Meme.create(filename=filename, tags="{'tags")
                     new_meme = Meme.create(filename=filename, tags=request.form['tags'])
                     new_meme.save()
@@ -73,7 +70,7 @@ def get_images():
 
 @app.route('/image/<file>')
 def get_image(file):
-    return send_file(UPLOAD_FOLDER + '/' + file)
+    return send_file(MEME_FOLDER + '/' + file)
 
 @app.route('/image/delete/<id>', methods=['GET'])
 def delete_image(id):
@@ -81,8 +78,8 @@ def delete_image(id):
     
     meme = Meme.get_by_id(pk=id)
     print(meme.filename)
-    if os.path.isfile(UPLOAD_FOLDER + '/' + meme.filename):
-        os.remove(path=UPLOAD_FOLDER + '/' + meme.filename)
+    if os.path.isfile(MEME_FOLDER + '/' + meme.filename):
+        os.remove(path=MEME_FOLDER + '/' + meme.filename)
     Meme.delete_by_id(pk=id)
     response = {'message': 'image deletion: success'}
     return response

@@ -1,20 +1,22 @@
 FROM node:18.9.1-alpine3.15 as node
 
-WORKDIR /app
-COPY . .
+WORKDIR /app/frontend
+COPY ./frontend .
 
 WORKDIR /app/frontend
 
-RUN npm install \
-    npm run build
+RUN npm install
+RUN npm run build
 
 FROM python:3.11.1-alpine3.16
 
 WORKDIR /app
-COPY --from=node /app/public .
-COPY . /app
+COPY --from=0 /app/public ./public
 
-WORKDIR /app
+COPY ./app.py /app
+COPY ./db.py /app
+COPY ./requirements.txt /app
+
 RUN pip install -r requirements.txt
 EXPOSE 5000
 ENTRYPOINT ["flask", "run", "--host=0.0.0.0"]

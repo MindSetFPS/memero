@@ -36,6 +36,8 @@ Recollector:
 - [ ] Add a field for number of likes/upvotes/ popularity
 - [ ] Built in image editor
 - [ ] Fix mobile version
+- [ ] Suggestions when adding a new tag
+- [ ] Remove spaces in tags
 
 ## Instructions for getting running
 
@@ -44,3 +46,9 @@ Recollector:
 ```bash
 flask --app hello --debug run
 ```
+
+## Build container
+ 
+ ```bash
+ docker build -t memerobuild:0.X -f Dockerfile.prodcontainer .
+ ```
