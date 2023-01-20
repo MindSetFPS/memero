@@ -44,7 +44,7 @@ Recollector:
 ###  Start development server
 
 ```bash
-flask --app hello --debug run
+flask --app app --debug run
 ```
 
 ## Build container
