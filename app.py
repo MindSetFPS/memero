@@ -10,7 +10,6 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__, static_folder='public', static_url_path="")
 app.config['MEME_FOLDER'] = MEME_FOLDER
-
 CORS(app=app) #only for development
 
 def tag_length(meme):
@@ -20,14 +19,14 @@ def tag_length(meme):
 def fav():
     return send_from_directory('/app/build/', 'vite.svg', mimetype="image/svg+xml")
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def catch_all(path):
     return app.send_static_file("index.html")
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
@@ -59,6 +58,7 @@ def upload_file():
         return redirect(request.url)
             # return redirect(url_for('download_file', name=filename))
 
+# fetch every 25 images
 @app.route('/images/<int:page>')
 def get_images(page):
     # sort by name, tags or date
@@ -78,10 +78,21 @@ def get_images(page):
     memes = json.dumps(memes)
     return memes
 
-@app.route('/image/<file>')
+# fetch image by filename
+@app.route('/image/file/<file>')
 def get_image(file):
     return send_file(MEME_FOLDER + '/' + file)
 
+# fetch image by id
+@app.route('/image/data/<int:img_id>')
+def get_image_by_id(img_id):
+    img_filename = Meme.get_by_id(pk=img_id)
+    print(vars(img_filename))
+    # return img_filename
+    img_json = json.dumps(model_to_dict(img_filename))
+    return img_json
+
+# delete image by id
 @app.route('/image/delete/<id>', methods=['GET'])
 def delete_image(id):
     # print(id)
