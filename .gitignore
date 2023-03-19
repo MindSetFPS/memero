@@ -6,6 +6,7 @@ public/
 r.py
 frontend/.vscode
 frontend/node_modules
+frontend/package-lock.json
 /memes
 generator3.py
 data.db
