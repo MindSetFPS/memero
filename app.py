@@ -8,11 +8,13 @@ import json
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
-
 app = Flask(__name__, static_folder='public', static_url_path="")
 app.config['MEME_FOLDER'] = MEME_FOLDER
 
-# CORS(app=app) only for development
+CORS(app=app) #only for development
+
+def tag_length(meme):
+    return len(meme['tags'])
 
 @app.route('/vite.svg')
 def fav():
@@ -57,14 +59,22 @@ def upload_file():
         return redirect(request.url)
             # return redirect(url_for('download_file', name=filename))
 
-def tag_length(meme):
-    return len(meme['tags'])
+@app.route('/images/<int:page>')
+def get_images(page):
+    # sort by name, tags or date
+    print(request.args.get('sort'))
 
-@app.route('/images')
-def get_images():
-    memes = Meme.select()
+    if request.args.get('sort') == 'name':
+        memes = Meme.select().paginate(page, 25).order_by(Meme.filename)
+
+    if request.args.get('sort') == 'tags':
+        memes = Meme.select().paginate(page, 25).order_by(Meme.tags)
+    
+    # if request.args.get == 'date':
+    #     memes = Meme.select()
+
     memes = [model_to_dict(u) for u in memes]
-    memes.sort(key=tag_length, reverse=True)
+    # memes.sort(key=tag_length, reverse=True)
     memes = json.dumps(memes)
     return memes
 
@@ -75,7 +85,6 @@ def get_image(file):
 @app.route('/image/delete/<id>', methods=['GET'])
 def delete_image(id):
     # print(id)
-    
     meme = Meme.get_by_id(pk=id)
     print(meme.filename)
     if os.path.isfile(MEME_FOLDER + '/' + meme.filename):
@@ -91,7 +100,6 @@ def edit_meme(id):
     meme = Meme.get_by_id(id)
     print(var)
     return { 'tags': meme.tags }
-
 
 @app.errorhandler(404)
 def not_found(e):
