@@ -3,45 +3,74 @@
   import getBaseUrl from "./lib/getBaseUrl"
   import { memesStore } from "./lib/store";
   import UploadMemes from "./lib/UploadMemes.svelte";
-
-	async function getImages() {
-    const res = await fetch(`${baseUrl}/images`);
-		const text = await res.json();
-    
-		if (res.ok) {
-      memesStore.set(text)      
-		} else {
-      throw new Error(text);
-		}
-	}
-
-  function handleSearh(){
-    filteredSearch = search.split(",")
-  }
-
-  function handleTagDeleted(event){
-    // console.log(event.detail.memeId, event.detail.tag, event.detail.index, event.detail.taglist)
-
-    const memeIndex = event.detail.index
-    //copy the current list of memes
-    let memesCopy = [...$memesStore]
-
-    //edit the copy
-    memesCopy[memeIndex].tags = event.detail.taglist.toString()
-
-    //replace with the copy
-    memesStore.update((value) =>  value = memesCopy)
-  }
+  
+  let windowInnerHeight,windowScrollY, outerHeight
+  let offsetHeight
 
   let posts;
+  let page = 1;
   let search;
   let filteredSearch = []
   let promise = []
   let baseUrl = getBaseUrl()
-  getImages()
-</script>
 
-<main class="p-4">
+	async function getImages(page){
+    const res = await fetch(`${baseUrl}/images/${page}`);
+		const text = await res.json();
+    
+    if(page == 1){
+      if (res.ok) {
+        console.log(text)
+        memesStore.set(text)
+      } else {
+        throw new Error(text);
+      }
+    } else {
+      if (res.ok) {
+        console.log(text)
+        $memesStore = [...$memesStore, ...text]
+      } else {
+        throw new Error(text);
+      }
+    }
+	}
+  
+  function handleSearh(){
+    filteredSearch = search.split(",")
+  }
+  
+  function handleTagDeleted(event){
+    // console.log(event.detail.memeId, event.detail.tag, event.detail.index, event.detail.taglist)
+    
+    const memeIndex = event.detail.index
+    //copy the current list of memes
+    let memesCopy = [...$memesStore]
+    
+    //edit the copy
+    memesCopy[memeIndex].tags = event.detail.taglist.toString()
+    
+    //replace with the copy
+    memesStore.update((value) =>  value = memesCopy)
+  }
+  
+  function handleLoadMoreButton(){
+    page = page + 1
+    getImages(page)
+    console.log($memesStore)
+  }
+  
+  getImages(page)
+  </script>
+
+<svelte:window 
+  bind:innerHeight={windowInnerHeight}
+  bind:outerHeight={outerHeight}
+  bind:scrollY={windowScrollY}
+  />
+
+<main class="p-4" 
+bind:offsetHeight={offsetHeight}
+>
   <div class="block lg:flex align-middle items-center w-full">
     <h1 class="text-5xl font-bold whitespace-nowrap">Your memes sir</h1>
       <input 
@@ -59,7 +88,6 @@
         </div>
         {/each}
       </p>
-
   </div>
 
   <div>
@@ -96,4 +124,12 @@
       </div>
     {/await}
   </div>
+  <footer>
+    <button 
+      class="bg-gray-300 p-2 rounded hover:bg-gray-500 transition" 
+      on:click={handleLoadMoreButton}
+    >
+      load more
+    </button>
+  </footer>
 </main>
