@@ -106,7 +106,7 @@
         <!-- <div>                   left-0  </div> -->
         <div 
             class="h-full w-1/3 bg-contain bg-center bg-no-repeat " 
-            style="background-image: url({baseUrl}/image/{post.filename})"
+            style="background-image: url({baseUrl}/image/file/{post.filename})"
         >
         </div>
         <div class="flex flex-col justify-center font-bold w-full h-full p-2">
