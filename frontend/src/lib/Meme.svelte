@@ -1,6 +1,6 @@
 {#if filteredSearch.length == 0 || matchingElements.length > 0}
 <div class="max-w-md" >
-    <img src="{baseUrl}/image/{post.filename}" alt="" on:click={ () => {
+    <img src="{baseUrl}/image/file/{post.filename}" alt="" on:click={ () => {
         isBigPicture = !isBigPicture
         console.log(isBigPicture)
         }}>
@@ -21,7 +21,7 @@
     </div>
     {/if}
     
-    <script>
+<script>
     import { createEventDispatcher } from "svelte"
     import TagList from "./TagList.svelte";
     import getBaseUrl from "./getBaseUrl";
