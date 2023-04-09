@@ -5,6 +5,7 @@ from werkzeug.utils import secure_filename
 from db import Meme,  MEME_FOLDER
 from playhouse.shortcuts import model_to_dict
 import json
+from peewee import fn
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
@@ -64,12 +65,14 @@ def get_images(page):
     # sort by name, tags or date
     print(request.args.get('sort'))
 
-    if request.args.get('sort') == 'name':
-        memes = Meme.select().paginate(page, 25).order_by(Meme.filename)
+    # if request.args.get('sort') == 'name':
+    #     memes = Meme.select().paginate(page, 25).order_by(Meme.filename)
 
-    if request.args.get('sort') == 'tags':
-        memes = Meme.select().paginate(page, 25).order_by(Meme.tags)
+    # if request.args.get('sort') == 'tags':
+    #     memes = Meme.select().paginate(page, 25).order_by(Meme.tags)
     
+    memes = Meme.select().paginate(page, 25).order_by(fn.LENGTH(Meme.tags).desc())
+
     # if request.args.get == 'date':
     #     memes = Meme.select()
 
