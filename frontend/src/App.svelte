@@ -3,6 +3,7 @@
   import getBaseUrl from "./lib/getBaseUrl"
   import { memesStore } from "./lib/store";
   import UploadMemes from "./lib/UploadMemes.svelte";
+  import { infiniteScrollObserver } from "./lib/loadOnLastItem";
   
   let windowInnerHeight,windowScrollY, outerHeight
   let offsetHeight
@@ -14,7 +15,7 @@
   let promise = []
   let baseUrl = getBaseUrl()
 
-	async function getImages(page){
+	async function getImages(){
     const res = await fetch(`${baseUrl}/images/${page}`);
 		const text = await res.json();
     
@@ -33,6 +34,8 @@
         throw new Error(text);
       }
     }
+    page = page + 1
+
 	}
   
   function handleSearh(){
@@ -52,15 +55,21 @@
     //replace with the copy
     memesStore.update((value) =>  value = memesCopy)
   }
-  
-  function handleLoadMoreButton(){
-    page = page + 1
-    getImages(page)
-    console.log($memesStore)
+
+  let observedElement = null
+
+  const load = () => {
+    setTimeout(() => {
+      getImages()
+    }, 400)
   }
-  
-  getImages(page)
-  </script>
+
+  $:{
+    if(observedElement){
+      infiniteScrollObserver({fetch: load, observedElement: observedElement})
+    }
+  }
+</script>
 
 <svelte:window 
   bind:innerHeight={windowInnerHeight}
@@ -124,12 +133,7 @@ bind:offsetHeight={offsetHeight}
       </div>
     {/await}
   </div>
-  <footer>
-    <button 
-      class="bg-gray-300 p-2 rounded hover:bg-gray-500 transition" 
-      on:click={handleLoadMoreButton}
-    >
-      load more
-    </button>
+  <footer bind:this={observedElement}>
+    <h1>Llegaste hasta el final</h1>
   </footer>
 </main>
