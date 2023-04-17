@@ -4,9 +4,6 @@
   import { memesStore } from "./lib/store";
   import UploadMemes from "./lib/UploadMemes.svelte";
   import { infiniteScrollObserver } from "./lib/loadOnLastItem";
-  
-  let windowInnerHeight,windowScrollY, outerHeight
-  let offsetHeight
 
   let posts;
   let page = 1;
@@ -71,15 +68,7 @@
   }
 </script>
 
-<svelte:window 
-  bind:innerHeight={windowInnerHeight}
-  bind:outerHeight={outerHeight}
-  bind:scrollY={windowScrollY}
-  />
-
-<main class="p-4" 
-bind:offsetHeight={offsetHeight}
->
+<main class="p-4" >
   <div class="block lg:flex align-middle items-center w-full">
     <h1 class="text-5xl font-bold whitespace-nowrap">Your memes sir</h1>
       <input 
@@ -106,7 +95,7 @@ bind:offsetHeight={offsetHeight}
       <UploadMemes on:filesUploaded={getImages} />
       <div 
         class="
-          grid gap-3
+          grid gap-0
           grid-cols-3
           md:grid-cols-4
           lg:grid-cols-5
