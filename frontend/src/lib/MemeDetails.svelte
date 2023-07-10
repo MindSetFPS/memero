@@ -94,25 +94,21 @@
 </script>
 
 {#if isBigPicture }
-<div class="fixed h-screen w-screen top-0 left-0 z-20"  >
-    <div 
-        class="
-            absolute z-20 top-0 
-            text-center bg-white p-2 rounded-lg scale-125
-            h-1/2 w-1/2
-            left-1/2 -translate-x-1/2 translate-y-1/2
-            lg:flex lg:justify-start
-    ">
-        <!-- <div>                   left-0  </div> -->
-        <div 
-            class="h-full w-1/3 bg-contain bg-center bg-no-repeat " 
-            style="background-image: url({baseUrl}/image/file/{post.filename})"
-        >
+<div class="h-full w-full fixed top-0 left-0 z-20 bg-pink-100/50"  >
+    <div class="w-full h-full absolute flex flex-col justify-end z-30 bg-pink-50/50 "> 
+        
+        <div class="h-5/6 grid justify-center content-center " > 
+            <img 
+                src="{baseUrl}/image/file/{post.filename}" 
+                class="max-h-full mx-auto" 
+                alt=""
+            >
         </div>
-        <div class="flex flex-col justify-center font-bold w-full h-full p-2">
+
+        <div class="h-1/6 w-full flex flex-col justify-center font-bold p-2 bg-white">
             {index}
-            <div class="flex w-full align-middle items-center my-2">
-                <div class="text-lg inline whitespace-nowrap">
+            <div class="flex w-full align-middle items-center">
+                <div class="text-lg inline whitespace-nowrap mx-2 ">
                     Agregar tags
                 </div>
                 <TagEditor id={post.id} index={index} />
