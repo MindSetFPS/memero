@@ -32,7 +32,6 @@
       }
     }
     page = page + 1
-
 	}
   
   function handleSearh(){
@@ -66,6 +65,8 @@
       infiniteScrollObserver({fetch: load, observedElement: observedElement})
     }
   }
+
+  getImages()
 </script>
 
 <main class="p-4" >
@@ -75,6 +76,7 @@
         type="text" 
         name="filter" 
         id="filter" 
+        class="p-2 m-2 rounded-lg bg-gray-200 placeholder:text-gray-500 hover:bg-gray-300 transition "
         placeholder="buscar meme" 
         bind:value={search} 
         on:input={handleSearh}
@@ -96,11 +98,12 @@
       <div 
         class="
           grid gap-0
-          grid-cols-3
+          grid-cols-2
+          sm:grid-cols-3
           md:grid-cols-4
           lg:grid-cols-5
           xl:grid-cols-6
-          2xl:grid-cols-8
+          2xl:grid-cols-7
       ">
         {#each $memesStore as post, index}
           <Meme 
@@ -112,10 +115,7 @@
         {/each}
 
         {#if $memesStore.length == 0}
-          <h1 class="
-            w-screen h-screen flex justify-center align-middle items-center
-            font-bold text-6xl
-          ">
+          <h1 class="w-screen h-screen flex justify-center align-middle items-center font-bold text-6xl">
             Sube tu primer meme 🤡
           </h1>
         {/if}
