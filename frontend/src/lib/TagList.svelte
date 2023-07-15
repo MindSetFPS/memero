@@ -25,7 +25,7 @@
     }
 </script>
 
-<div class="relative h-full w-full text-sm overflow-auto " >
+<div class="relative h-full w-full overflow-scroll whitespace-nowrap inline-block" >
     {#if tags && tags.length > 0}
         {#each taglist as tag}
             <Tag tag={tag} on:delete={handleTagDeleted} />
