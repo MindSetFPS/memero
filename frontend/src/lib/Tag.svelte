@@ -13,9 +13,10 @@
 
 </script>
 <div 
-class="
-    hover:bg-green-600 transition font-semibold rounded-full bg-blue-400 inline-block text-white
-    mx-1 px-3 py-1 my-1">
+    class="
+        hover:bg-green-600 transition font-semibold rounded-full bg-blue-400 inline-block text-white
+        mx-1 px-3 py-1 my-1 text-xs"
+>
 {tag}
 
 <span
