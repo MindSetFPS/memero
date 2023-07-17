@@ -38,6 +38,7 @@ Recollector:
 - [ ] Fix mobile version
 - [ ] Suggestions when adding a new tag
 - [ ] Remove spaces in tags
+- [ ] Create installable app
 
 ## Instructions for getting running
 
