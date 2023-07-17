@@ -11,3 +11,4 @@ frontend/package-lock.json
 generator3.py
 data.db
 /data
+/env
