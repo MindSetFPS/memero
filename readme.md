@@ -53,3 +53,26 @@ flask --app app --debug run
  ```bash
  docker build -t memerobuild:0.X -f Dockerfile.prodcontainer .
  ```
+
+# Build Desktop app
+
+## Create new spec
+
+```bash
+pyi-makespec --onefile --noconsole --icon clown-face.ico --name dist .\main.py
+```
+
+## Add the ui files
+
+```
+a = Analysis(
+    ['main.py'],
+    //other parameters
+    datas=[('public','.\public')],
+```
+
+## Or use predefined spec, then run the build command
+
+```bash
+pytinstaller dist.spec
+```
