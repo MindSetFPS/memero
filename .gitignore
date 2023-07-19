@@ -12,3 +12,5 @@ generator3.py
 data.db
 /data
 /env
+dist/
+build/
