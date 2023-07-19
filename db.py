@@ -2,12 +2,13 @@ from peewee import *
 import os
 from playhouse.sqlite_ext import SqliteExtDatabase, JSONField
 
-UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "data") 
+UPLOAD_FOLDER = os.path.join(os.getcwd(), "data") 
 MEME_FOLDER = os.path.join(UPLOAD_FOLDER, 'memes')
 DB_FOLDER = os.path.join(UPLOAD_FOLDER, 'database') 
 
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
+    print("current working directory: ", os.getcwd())
 if not os.path.exists(MEME_FOLDER):
     os.makedirs(MEME_FOLDER )
 if not os.path.exists(DB_FOLDER):
