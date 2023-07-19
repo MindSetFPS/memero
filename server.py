@@ -17,7 +17,9 @@ def search_images_in_directory():
 
 search_images_in_directory()
 
-app = Flask(__name__, static_folder='public', static_url_path="")
+public_folder = os.path.join(os.path.dirname(__file__), 'public')
+
+app = Flask(__name__, static_folder=public_folder, static_url_path="")
 app.config['MEME_FOLDER'] = MEME_FOLDER
 CORS(app=app) #only for development
 
